@@ -4,16 +4,18 @@
       background: var(--default-primary-color);
       color: var(--text-primary-color);
     }
+
     paper-dialog {
       background: var(--default-dialog-background-color);
     }
+
     paper-spinner {
       float: right;
     }
 
   </style>
-  <template>
 
+  <template>
     <paper-input id="emailInput" label="Email" type="email" value="{{email}}"></paper-input>
     <paper-input id="passwordInput" label="Password" type="password" value="{{password}}"></paper-input>
     <br>
@@ -33,7 +35,6 @@
     <iron-localstorage id="tokenStorage" name="tokenStorage" value="{{token}}"></iron-localstorage>
 
     <spark-controller id="sparkController" on-response='loginSuccess' on-error='loginFailure'></spark-controller>
-
   </template>
 
   <script>

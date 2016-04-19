@@ -1,7 +1,6 @@
 <dom-module id="filter-option">
 
   <style>
-
     .card-content {
       max-width: 450px;
     }
@@ -28,7 +27,6 @@
   </style>
 
   <template>
-
     <paper-card heading="{{name}}" image="images/{{name}}.jpg" on-tap="selectFilter">
       <paper-ripple></paper-ripple>
       <div class="card-content">
@@ -52,7 +50,7 @@
           }
         },
         selectFilter: function () {
-          this.$.sparkController.setFilter(app.token, app.device.id, this.name.toLowerCase());
+          this.$.sparkController.executeCommand(app.token, app.device.id, 'filter', this.name.toLowerCase());
           page('/filters/' + this.name);
         }
       });

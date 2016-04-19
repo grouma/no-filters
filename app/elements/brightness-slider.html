@@ -35,7 +35,7 @@
           var slider = this.$.slider;
           var sparkController = this.$.sparkController;
           slider.addEventListener('value-change', function () {
-            sparkController.setBrightness(app.token, app.device.id, slider.value);
+            sparkController.executeCommand(app.token, app.device.id, 'brightness', slider.value);
           });
         }
       });

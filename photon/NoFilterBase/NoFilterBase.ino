@@ -47,6 +47,7 @@ void loop()
 }
 
 
+// Sets the led strip to the predefined filter.
 int filterCommand(String filter)
 {
   currentFilter = filter;
@@ -73,7 +74,7 @@ int filterCommand(String filter)
 }
 
 
-// Sets the brightness of the LED Strip. Valid values [0,100].
+// Sets the brightness of the LED strip. Valid values [0,100].
 int brightnessCommand(String command)
 {
   int level = command.toInt();
@@ -87,6 +88,7 @@ int brightnessCommand(String command)
 }
 
 
+// Alternates each light of the LED strip with the provided colors.
 void alternateColorFilter(uint32_t a, uint32_t b)
 {
   for (int i = 0; i < strip.numPixels(); i++) {
@@ -100,6 +102,7 @@ void alternateColorFilter(uint32_t a, uint32_t b)
 }
 
 
+// Evenly fades colors from a to b along the LED strip.
 void transitionColorFilter(uint32_t a, uint32_t b)
 {
   transitionColors(a, b, 0, PIXEL_COUNT);
@@ -107,6 +110,7 @@ void transitionColorFilter(uint32_t a, uint32_t b)
 }
 
 
+// Evenly fades colors from a to b to c along the LED strip.
 void transitionColorFilter(uint32_t a, uint32_t b, uint32_t c)
 {
   transitionColors(a, b, 0, PIXEL_COUNT / 2);
@@ -115,6 +119,7 @@ void transitionColorFilter(uint32_t a, uint32_t b, uint32_t c)
 }
 
 
+// Evenly fades colors from a to b at LED start index in the provided steps.
 void transitionColors(uint32_t a, uint32_t b, int start, int steps)
 {
   for (int i = 0; i < steps; i++) {

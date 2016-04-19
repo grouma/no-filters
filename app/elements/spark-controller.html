@@ -1,13 +1,9 @@
 <dom-module id="spark-controller">
 
   <template>
-
     <iron-ajax id="accessTokenRequest" url="https://api.particle.io/oauth/token" handle-as="json" method="POST" on-response="onResponse" on-error="onError"></iron-ajax>
-
     <iron-ajax id="deviceListRequest" url="https://api.particle.io/v1/devices" handle-as="json" method="GET" on-response="onResponse" on-error="onError"></iron-ajax>
-
     <iron-ajax id="functionRequest" url="" handle-as="json" method="POST" on-response="onResponse" on-error="onError"></iron-ajax>
-
   </template>
 
   <script>
@@ -37,15 +33,9 @@
           };
           deviceListRequest.generateRequest();
         },
-        setBrightness: function (accessToken, deviceId, args) {
+        executeCommand: function (accessToken, deviceId, command, args) {
           var functionRequest = this.$.functionRequest;
-          functionRequest.url = 'https://api.particle.io/v1/devices/' + deviceId + '/brightness';
-          functionRequest.body = 'access_token=' + encodeURIComponent(accessToken) + '&args=' + args;
-          functionRequest.generateRequest();
-        },
-        setFilter: function (accessToken, deviceId, args) {
-          var functionRequest = this.$.functionRequest;
-          functionRequest.url = 'https://api.particle.io/v1/devices/' + deviceId + '/filter';
+          functionRequest.url = 'https://api.particle.io/v1/devices/' + deviceId + '/' + command;
           functionRequest.body = 'access_token=' + encodeURIComponent(accessToken) + '&args=' + args;
           functionRequest.generateRequest();
         },
