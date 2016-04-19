@@ -5,12 +5,12 @@
   </template>
 
   <script>
-    (function () {
+    (function() {
       Polymer({
         is: 'video-camera',
         extends: 'video',
         properties: {},
-        ready: function () {
+        ready: function() {
           var me = this;
           if (!window.URL) {
             window.URL = window.URL || window.webkitURL || window.msURL || window.oURL;
@@ -22,29 +22,27 @@
           navigator.getUserMedia({
             audio: false,
             video: {
-              optional: [
-                {
-                  minWidth: 320
-                }, {
-                  minWidth: 640
-                }, {
-                  minWidth: 1024
-                }, {
-                  minWidth: 1280
-                }, {
-                  minWidth: 1920
-                }, {
-                  minWidth: 2560
-                }
-              ]
+              optional: [{
+                minWidth: 320
+              }, {
+                minWidth: 640
+              }, {
+                minWidth: 1024
+              }, {
+                minWidth: 1280
+              }, {
+                minWidth: 1920
+              }, {
+                minWidth: 2560
+              }]
             }
-          }, function (stream) {
+          }, function(stream) {
             me.src = window.URL.createObjectURL(stream);
-          }, function (err) {
+          }, function(err) {
             throw Error(err);
           });
         },
-        capturePicture: function () {
+        capturePicture: function() {
           var context = this.$.canvas.getContext('2d');
           var width = this.videoWidth * 0.75;
           var height = this.videoHeight * 0.75;
@@ -52,10 +50,10 @@
           this.$.canvas.width = width;
           this.$.canvas.height = height;
           context.drawImage(video, 0, 0, width, height);
-          var download = document.createElement('a');
-          download.download = 'project_filter_'+date.getTime()+'.png';
-          download.href = canvas.toDataURL("image/png");
-          download.click();
+          var canvas = document.getElementById("canvas");
+          canvas.toBlob(function(blob) {
+            saveAs(blob, 'project_filter_' + date.getTime() + '.png')
+          }, 'image/png');
         }
       });
     })();
