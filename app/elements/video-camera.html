@@ -2,7 +2,6 @@
 
   <template>
     <canvas id="canvas"></canvas>
-    <a id="download" download="test.png">Download</a>
   </template>
 
   <script>
@@ -47,14 +46,16 @@
         },
         capturePicture: function () {
           var context = this.$.canvas.getContext('2d');
-          var width = this.videoWidth * .5;
-          var height = this.videoHeight * .5;
+          var width = this.videoWidth * 0.75;
+          var height = this.videoHeight * 0.75;
+          var date = new Date();
           this.$.canvas.width = width;
           this.$.canvas.height = height;
           context.drawImage(video, 0, 0, width, height);
-          this.$.download.download = 'test.png';
-          this.$.download.href = canvas.toDataURL("image/png");
-          this.$.download.click();
+          var download = document.createElement('a');
+          download.download = 'project_filter_'+date.getTime()+'.png';
+          download.href = canvas.toDataURL("image/png");
+          download.click();
         }
       });
     })();
