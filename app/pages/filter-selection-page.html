@@ -1,0 +1,55 @@
+<dom-module id="filter-selection-page">
+
+  <style>
+    .flex-center-justified {
+      @apply(--layout-horizontal);
+      @apply(--layout-center-justified);
+    }
+
+    .header {
+      font-size: 96px;
+      font-family: 'Shadows Into Light', cursive;
+    }
+
+  </style>
+
+  <template>
+    <div id="header" class="header flex-center-justified">
+      @project #filter
+    </div>
+    <div id="filters">
+      <filter-list filters="{{filters}}"></filter-list>
+    </div>
+  </template>
+
+  <script>
+    (function () {
+      Polymer({
+        is: 'filter-selection-page',
+        behaviors: [Polymer.NeonSharedElementAnimatableBehavior],
+        properties: {
+          filters: {
+            type: Array
+          },
+          animationConfig: {
+            value: function () {
+              return {
+                'entry': {
+                  name: 'fade-in-animation',
+                  node: this
+                },
+                'exit': [
+                  {
+                    name: 'fade-out-animation',
+                    node: this
+                  }
+                ]
+              }
+            }
+          }
+        }
+      });
+    })();
+  </script>
+
+</dom-module>

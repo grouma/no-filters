@@ -1,0 +1,62 @@
+<dom-module id="filter-option">
+
+  <style>
+
+    .card-content {
+      max-width: 450px;
+    }
+
+    .card-actions {
+      @apply(--layout-horizontal);
+      @apply(--layout-around-justified);
+    }
+
+    paper-card {
+      cursor: pointer;
+      max-width: 450px;
+
+      --paper-card-header-text: {
+        font-family: 'Shadows Into Light', cursive;
+        font-size: 48px;
+      }
+    }
+
+    paper-button {
+      text-transform: lowercase;
+    }
+
+  </style>
+
+  <template>
+
+    <paper-card heading="{{name}}" image="images/{{name}}.jpg" on-tap="selectFilter">
+      <paper-ripple></paper-ripple>
+      <div class="card-content">
+        {{description}}
+      </div>
+    </paper-card>
+
+    <spark-controller id="sparkController"></spark-controller>
+  </template>
+
+  <script>
+    (function () {
+      Polymer({
+        is: 'filter-option',
+        properties: {
+          name: {
+            type: String
+          },
+          description: {
+            type: String
+          }
+        },
+        selectFilter: function () {
+          this.$.sparkController.setFilter(app.token, app.device.id, this.name.toLowerCase());
+          page('/filters/' + this.name);
+        }
+      });
+    })();
+  </script>
+
+</dom-module>

@@ -1,0 +1,43 @@
+<dom-module id="filter-list">
+
+  <style>
+
+    .flex-equal-justified {
+      @apply(--layout-horizontal);
+      @apply(--layout-around-justified);
+      @apply(--layout-wrap);
+    }
+
+    filter-option {
+      padding: 12px;
+    }
+
+    .container {
+      padding: 24px;
+    }
+
+  </style>
+
+  <template>
+    <div class="container flex-equal-justified">
+      <template is="dom-repeat" items="{{filters}}">
+        <filter-option name={{item.name}} description={{item.description}}></filter-option>
+      </template>
+    </div>
+
+  </template>
+
+  <script>
+    (function () {
+      Polymer({
+        is: 'filter-list',
+        properties: {
+          filters: {
+            type: Array
+          }
+        }
+      });
+    })();
+  </script>
+
+</dom-module>

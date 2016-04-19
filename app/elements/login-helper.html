@@ -1,0 +1,102 @@
+<dom-module id="login-helper">
+  <style>
+    paper-button.colored {
+      background: var(--default-primary-color);
+      color: var(--text-primary-color);
+    }
+    paper-dialog {
+      background: var(--default-dialog-background-color);
+    }
+    paper-spinner {
+      float: right;
+    }
+
+  </style>
+  <template>
+
+    <paper-input id="emailInput" label="Email" type="email" value="{{email}}"></paper-input>
+    <paper-input id="passwordInput" label="Password" type="password" value="{{password}}"></paper-input>
+    <br>
+    <paper-button id="loginButton" on-tap="loginTap" raised disabled>Login</paper-button>
+    <paper-spinner id="loginSpinner" active></paper-spinner>
+
+    <paper-dialog id="errorDialog" modal="true">
+      <h2>Error</h2>
+      <paper-dialog-scrollable>{{errorMessage}}</paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Ok</paper-button>
+      </div>
+    </paper-dialog>
+
+    <iron-a11y-keys id="passwordEnterHandler" keys="enter" on-keys-pressed="loginTap"></iron-a11y-keys>
+    <iron-a11y-keys id="emailEnterHandler" keys="enter" on-keys-pressed="loginTap"></iron-a11y-keys>
+    <iron-localstorage id="tokenStorage" name="tokenStorage" value="{{token}}"></iron-localstorage>
+
+    <spark-controller id="sparkController" on-response='loginSuccess' on-error='loginFailure'></spark-controller>
+
+  </template>
+
+  <script>
+    (function () {
+      Polymer({
+        is: 'login-helper',
+        ready: function () {
+          this.$.emailEnterHandler.target = this.$.emailInput;
+          this.$.passwordEnterHandler.target = this.$.passwordInput;
+          this.$.loginSpinner.toggleAttribute('active', false);
+        },
+        properties: {
+          email: {
+            type: String,
+            observer: 'inputChange'
+          },
+          password: {
+            type: String,
+            observer: 'inputChange'
+          },
+          errorMessage: {
+            type: String
+          },
+          token: {
+            type: String,
+            notify: true
+          }
+        },
+        inputChange: function () {
+          var loginButton = this.$.loginButton;
+          if (this.email !== '' && this.password !== '') {
+            loginButton.toggleAttribute('disabled', false);
+            loginButton.toggleClass('colored', true);
+          } else {
+            loginButton.toggleAttribute('disabled', true);
+            loginButton.toggleClass('colored', false);
+          }
+        },
+        loginSuccess: function (e) {
+          /*jshint camelcase: false */
+          this.token = e.detail.response.access_token;
+          this.$.loginSpinner.toggleAttribute('active', false);
+        },
+        loginFailure: function (e) {
+          /*jshint camelcase: false */
+          this.errorMessage = e.detail.request.xhr.response.error_description;
+          this.$.loginSpinner.toggleAttribute('active', false);
+          this.$.errorDialog.toggle();
+        },
+        loginTap: function () {
+          if (this.email !== '' && this.password !== '') {
+            this.$.loginSpinner.toggleAttribute('active', true);
+            this.$.sparkController.getAccessToken({
+              username: this.email,
+              password: this.password
+            }, this.loginSuccess, this.loginFailure);
+          }
+        },
+        clearData: function () {
+          this.email = '';
+          this.password = '';
+        }
+      });
+    })();
+  </script>
+</dom-module>

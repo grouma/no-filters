@@ -1,0 +1,45 @@
+<dom-module id="brightness-slider">
+
+  <style>
+    :host {
+      display: flex;
+    }
+
+    paper-slider {
+      width: 100%;
+      --paper-slider-pin-color: var(--paper-grey-700);
+      --paper-slider-knob-color: var(--paper-grey-700);
+      --paper-slider-active-color: var(--paper-grey-700);
+    }
+
+    iron-icon {
+      color: var(--google-grey-700);
+    }
+
+  </style>
+
+  <template>
+    <iron-icon icon="device:brightness-low"></iron-icon>
+    <paper-slider id="slider" min="0" max="100" value="100" pin></paper-slider>
+    <iron-icon icon="device:brightness-high"></iron-icon>
+
+    <spark-controller id="sparkController"></spark-controller>
+  </template>
+
+  <script>
+    (function () {
+      Polymer({
+        is: 'brightness-slider',
+        properties: {},
+        ready: function () {
+          var slider = this.$.slider;
+          var sparkController = this.$.sparkController;
+          slider.addEventListener('value-change', function () {
+            sparkController.setBrightness(app.token, app.device.id, slider.value);
+          });
+        }
+      });
+    })();
+  </script>
+
+</dom-module>

@@ -1,0 +1,65 @@
+<dom-module id="video-camera">
+
+  <style></style>
+
+  <template>
+    <canvas id="canvas"></canvas>
+    <a id="download" download="test.png">Download</a>
+  </template>
+
+  <script>
+    (function () {
+      Polymer({
+        is: 'video-camera',
+        extends: 'video',
+        properties: {},
+        ready: function () {
+          var me = this;
+          if (!window.URL) {
+            window.URL = window.URL || window.webkitURL || window.msURL || window.oURL;
+          }
+          if (!navigator.getUserMedia) {
+            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+          }
+
+          navigator.getUserMedia({
+            audio: false,
+            video: {
+              optional: [
+                {
+                  minWidth: 320
+                }, {
+                  minWidth: 640
+                }, {
+                  minWidth: 1024
+                }, {
+                  minWidth: 1280
+                }, {
+                  minWidth: 1920
+                }, {
+                  minWidth: 2560
+                }
+              ]
+            }
+          }, function (stream) {
+            me.src = window.URL.createObjectURL(stream);
+          }, function (err) {
+            throw Error(err);
+          });
+        },
+        capturePicture: function () {
+          var context = this.$.canvas.getContext('2d');
+          var width = this.videoWidth * .5;
+          var height = this.videoHeight * .5;
+          this.$.canvas.width = width;
+          this.$.canvas.height = height;
+          context.drawImage(video, 0, 0, width, height);
+          this.$.download.download = 'test.png';
+          this.$.download.href = canvas.toDataURL("image/png");
+          this.$.download.click();
+        }
+      });
+    })();
+  </script>
+
+</dom-module>

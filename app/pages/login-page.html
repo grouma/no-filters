@@ -1,0 +1,75 @@
+<dom-module id="login-page">
+
+  <style>
+    .loginContainer {
+      @apply(--layout-horizontal);
+      @apply(--layout-center-justified);
+    }
+
+    login-helper {
+      padding: 24px;
+      min-width: 400px;
+    }
+
+  </style>
+
+  <template>
+    <div class="loginContainer">
+      <login-helper id="loginHelper" token="{{token}}"></login-helper>
+    </div>
+
+    <spark-controller id="sparkController" on-response="handleResponse" on-error="handleError"></spark-controller>
+  </template>
+
+  <script>
+    (function () {
+      Polymer({
+        is: 'login-page',
+        behaviors: [Polymer.NeonSharedElementAnimatableBehavior],
+        properties: {
+          token: {
+            type: String,
+            observer: 'tokenLoadHandler',
+            notify: true
+          },
+          animationConfig: {
+            value: function () {
+              return {
+                'entry': {
+                  name: 'fade-in-animation',
+                  node: this
+                },
+                'exit': [
+                  {
+                    name: 'fade-out-animation',
+                    node: this
+                  }
+                ]
+              }
+            }
+          }
+        },
+        handleResponse: function (e) {
+          e.detail.response.forEach(function (device) {
+            if (device.name == 'NoFilterBase') {
+              app.device = device;
+              page('/');
+            }
+          });
+        },
+        tokenLoadHandler: function () {
+          if (this.token != null) {
+            app.token = this.token
+            this.$.sparkController.getDevices(app.token);
+          }
+        },
+        routeChangeHandler: function () {
+          if (this.currentRoute === 'login') {
+            this.$.loginHelper.clearData();
+          }
+        }
+      });
+    })();
+  </script>
+
+</dom-module>
